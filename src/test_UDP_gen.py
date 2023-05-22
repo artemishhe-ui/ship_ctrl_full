@@ -28,10 +28,10 @@ def update_progress_bar(progress):
     print(f'\r[{bar}] {percentage}% ', end='', flush=True)
 
 # Usage example
-destination_ip = '192.168.0.100'  # Replace with the destination IP address
-destination_port = 12345  # Replace with the destination port
+destination_ip = '127.0.0.1'  # Replace with the destination IP address
+destination_port = 1234  # Replace with the destination port
 packet_count = 100  # Number of UDP packets to send
-packet_interval = 0.1  # Interval between packets in seconds
+packet_interval = 0.9  # Interval between packets in seconds
 payload_size = 1024  # Size of the payload in bytes
 
 send_random_traffic(destination_ip, destination_port, packet_count, packet_interval, payload_size)
