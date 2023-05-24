@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.9)
 
 # Specify the project info.
-project(nmea_console VERSION 1.0.0 DESCRIPTION "Ship communication protocol over udp non_library version")
+project(ship_ctrl_full VERSION 0.1.0 DESCRIPTION "Ship communication protocol over udp non_library version")
 
 # Set the C++ standard to be used
 set(CMAKE_CXX_STANDARD 20)
@@ -26,7 +26,9 @@ file(GLOB SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 #    include/DllShip.h
 #)
 
-add_executable(nmea_console src/nmea_com_console.cpp)
+add_executable(nmea_com 
+    src/nmea_com.cpp
+    include/NmeaHandler.h)
 
 # Optional: Specify library directories
 #link_directories(lib)
@@ -35,7 +37,7 @@ add_executable(nmea_console src/nmea_com_console.cpp)
 #target_link_libraries(MyProject library1 library2)
 
 # Configure the directories to search for header files.
-target_include_directories(${PROJECT_NAME} PRIVATE source)
+target_include_directories(${PROJECT_NAME} PRIVATE src)
 
 # Set the version property.
 set_target_properties(${PROJECT_NAME} PROPERTIES VERSION ${PROJECT_VERSION})
