@@ -9,6 +9,7 @@
 
 //#define M_PI 3.14
 
+/// @brief GNSSData class store and simple calc
 class GNSSData {
 public:
     /// @brief defalut constructor
