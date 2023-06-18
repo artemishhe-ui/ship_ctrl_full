@@ -1,7 +1,7 @@
 from asyncio import sleep
 from gps3.agps3threaded import AGPS3mechanism
 agps_thread = AGPS3mechanism()  # Instantiate AGPS3 Mechanisms
-agps_thread.stream_data(host='192.168.16.14')  # From localhost (), or other hosts, by example, (host='gps.ddns.net')
+agps_thread.stream_data(host='gps.ddns.net')  # From localhost (), or other hosts, by example, (host='gps.ddns.net')
 agps_thread.run_thread()  # Throttle time to sleep after an empty lookup, default '()' 0.2 two tenths of a second
 
 while True:  # All data is available via instantiated thread data stream attribute.

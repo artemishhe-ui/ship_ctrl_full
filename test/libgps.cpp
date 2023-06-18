@@ -1,1 +1,3 @@
-#include <libgpsmm>
+//#include <libgpsmm>
+
+#include <gps.h>
