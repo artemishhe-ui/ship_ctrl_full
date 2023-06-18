@@ -1,0 +1,12 @@
+{"class":"WATCH","enable":true,"json":true,"nmea":false,"raw":0,"scaled":false,"timing":false,"split24":false,"pps":false}
+?WATCH={"enable":true, "nmea":true}
+?WATCH={"enable":false, "nmea":false}
+
+{"class":"TPV","device":"/dev/ttyS3","mode":1,"time":"2023-05-31T12:10:35.000Z","leapseconds":18,"ept":0.005}
+
+{"class":"SKY","device":"/dev/ttyS3","vdop":99.99,"tdop":99.99,"hdop":99.99,"gdop":99.99,"pdop":99.99,"satellites":[{"PRN":2,"az":0.0,"ss":28.0,"used":false,
+"gnssid":0,"svid":2,"health":1},{"PRN":4,"az":0.0,"ss":28.0,"used":false,"gnssid":0,"svid":4,"health":1},{"PRN":6,"az":0.0,"ss":26.0,"used":false,"gnssid":0,
+"svid":6,"health":1},{"PRN":7,"az":0.0,"ss":25.0,"used":false,"gnssid":0,"svid":7,"health":1},{"PRN":10,"az":0.0,"ss":28.0,"used":false,"gnssid":0,"svid":10,
+"health":1},{"PRN":20,"az":0.0,"ss":0.0,"used":false,"gnssid":0,"svid":20,"health":1},{"PRN":22,"az":0.0,"ss":30.0,"used":false,"gnssid":0,"svid":22,"health"
+:1},{"PRN":27,"az":0.0,"ss":0.0,"used":false,"gnssid":0,"svid":27,"health":1},{"PRN":28,"az":0.0,"ss":0.0,"used":false,"gnssid":0,"svid":28,"health":1},{"PRN
+":33,"az":0.0,"ss":0.0,"used":false,"gnssid":1,"svid":120,"health":1}]}
