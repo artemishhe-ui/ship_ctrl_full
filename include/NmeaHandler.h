@@ -1,29 +1,23 @@
 #pragma once
-/*
-#include <string>
 
-class NmeaHandler
-{
-public:
-	std::string pre_read(std::string msg);
-
-
-private:
-	// TODO: decribe specific handlers here call em from main handler pre_read
-};
-*/
+#define GOOGLE_STRIP_LOG 1    // this must go before the #include!
+//#define GLOG_NO_ABBREVIATED_SEVERITIES
+#include <glog/logging.h>
 
 #include <iostream>
 #include <string>
 #include <queue>
 #include <map>
+#include "nmea_tools.h"
 
 using namespace std; // @todo: get rid of
 
+const string GP_MESSAGE_SENDER = "$GP";
+
 // NMEA message types
-const string GGA_MESSAGE = "$GPGGA";
-const string RMC_MESSAGE = "$GPRMC";
-const string VTG_MESSAGE = "$GPVTG";
+const string GGA_MESSAGE = "GGA";
+const string RMC_MESSAGE = "RMC";
+const string VTG_MESSAGE = "VTG";
 
 // Base class for NMEA message handlers
 class NmeaMessageHandler {
@@ -67,7 +61,13 @@ public:
 
     void dispatch(const string& message) {
         // Extract message type from message
-        string messageType = message.substr(0, 6);
+        string messageType = message.substr(3, 6); // no talker ID add $ so 3-6
+
+        if (CalculateChecksum<unsigned char>(message))
+        {
+            /* code */
+        }
+        
 
         // Check if handler exists for message type
         if (handlers.find(messageType) != handlers.end()) {

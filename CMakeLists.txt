@@ -7,10 +7,23 @@ project(ship_ctrl_full VERSION 0.1.0 DESCRIPTION "Ship communication protocol ov
 # Set the C++ standard to be used
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0 -g")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -flto")
+
+enable_testing()
+
+find_package(Boost REQUIRED)
+
+find_package(glog REQUIRED)
 
 # Include headers
-include_directories(${CMAKE_SOURCE_DIR}/include)
+include_directories(include)
+
+add_subdirectory( src build/src )
+add_subdirectory( test build/test )
+
+
+
 
 # Add precompiled header file
 #set(PRECOMPILED_HEADER ${CMAKE_SOURCE_DIR}/include/pch.h)
@@ -18,7 +31,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 #list(APPEND SOURCE_FILES ${PRECOMPILED_HEADER})
 
 # Add source files
-file(GLOB SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp)
+#file(GLOB SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 
 # Declare the library target.
 #add_library(${PROJECT_NAME} SHARED
@@ -26,9 +39,7 @@ file(GLOB SOURCE_FILES ${CMAKE_SOURCE_DIR}/src/*.cpp)
 #    include/DllShip.h
 #)
 
-add_executable(nmea_com 
-    src/nmea_com.cpp
-    include/NmeaHandler.h)
+
 
 # Optional: Specify library directories
 #link_directories(lib)
