@@ -24,4 +24,4 @@ bool CheckChecksum(const std::string& sentence);
 /// @brief form MSG
 /// @param sentence all exept talker ID and Checksumm 
 /// @return complete MSG
-std::string formNMEAMessage(const std::string& sentence);
+std::string formNMEAMessage(const std::string& sentence, const std::string talk_id = "U0");

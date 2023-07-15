@@ -23,8 +23,19 @@ template<> std::string CalculateChecksum(const std::string& sentence)
     int checksum = 0;
 
     // Exclude the starting '$' and ending '*' characters
-    size_t startIndex = sentence.find('$') + 1;
+    size_t startIndex = sentence.find('$');
     size_t endIndex = sentence.rfind('*');
+
+    if (startIndex == std::string::npos)
+    {
+        startIndex = 0;
+    }
+    else
+    {
+        startIndex += 1; // next char afrer $
+    }
+    
+    
     if (endIndex == std::string::npos)
     {
         endIndex = sentence.length();
@@ -66,12 +77,13 @@ bool CheckChecksum(const std::string& sentence)
     #define TALKER_ID "U0" // UP -is mcu U# is user defined SN -- pos sys
 #endif
 
-std::string formNMEAMessage(const std::string& sentence) {
+std::string formNMEAMessage(const std::string& sentence, const std::string talk_id) 
+{
     std::string checksum = CalculateChecksum<std::string>(sentence);
 
     //return "$" + (std::string)TALKER_ID + sentence + "*" + checksum + "\r\n";
     std::stringstream stream;
-    stream << "$" << "U0" << sentence << "*" << checksum;
+    stream << "$" << talk_id << sentence << "*" << checksum;
     return stream.str();
 }
 
