@@ -351,3 +351,5 @@ MigrationBackup/
 # CMake + automake
 build/
 autom4te.cache/
+# exec
+nmea_console
