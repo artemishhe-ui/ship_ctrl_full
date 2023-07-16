@@ -18,7 +18,7 @@ BOOST_AUTO_TEST_CASE(FiniteMSG_checksumm_Test)
 BOOST_AUTO_TEST_CASE(EmptyMSG_checksumm_Test)
 {
     //Calculator calc;
-    BOOST_CHECK_EQUAL( CalculateChecksum<unsigned char>("$GPGSA,A,1,,,,,,,,,,,,,,,,*32") , 0x32);
+    BOOST_CHECK_EQUAL( CalculateChecksum<unsigned char>("$GPVTG,089.0,T,,,15.2,N,,,*53") , 0x53);
 }
 
 BOOST_AUTO_TEST_CASE(FiniteMSG_checksumm_Teststr)
