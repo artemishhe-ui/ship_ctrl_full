@@ -12,9 +12,14 @@
 
 using namespace std; // @todo: get rid of
 
-const string GP_MESSAGE_SENDER = "$GP"; // gps but not glonass!
-const string RC_MESSAGE_SENDER = "$RC"; // the remote control must be here
-const string SN_MESSAGE_SENDER = "$SN"; // pos control sys
+
+const string IN_SENDER = "IN"; // combined gps + LC = integrated nav!
+const string GP_SENDER = "GP"; // gps but not glonass!
+const string GA_SENDER = "GA"; // galileo
+const string GL_SENDER = "GL"; // glonass
+const string GN_SENDER = "GN"; // any other GNSS
+const string RC_SENDER = "RC"; // the remote control must be here
+const string SN_SENDER = "SN"; // pos control sys
 
 // NMEA message types
 const string GGA_MESSAGE = "GGA";
