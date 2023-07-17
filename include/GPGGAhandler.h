@@ -16,20 +16,22 @@
     /// @param sentence smth like "$GPGGA,134658.00,5106.9792,  N, 11402.3003,  W,  2,  09,  1.0,   1048.47,M,       -16.27, M,      08,         AAAA * 60"
     /// @param storage GNSSData obj ref to fill GNSSData() : latitude(0.0), longitude(0.0), altitude(0.0), heading(0.0) {}
     /// @return sucsess/fail
-    bool parseNMEA_GAA(const std::string& sentence, GNSSData * storage) {
+    int parseNMEA_GAA(const std::string& sentence, GNSSData * storage) {
         std::istringstream iss(sentence);
         std::string token;
 
         // reCheck if the sentence is a GGA sentence
-        if (!(std::getline(iss, token, ',') && token == "$GPGGA")) { // TODO: split & prod err warn
-            LOG(WARNING) << "Wrong message expect GGA got: " << sentence;
+        std::getline(iss, token, ',');
+        /*
+        if (!(std::getline(iss, token, ',') && token.substr(2) == "GGA")) { // TODO: split & prod err warn
+            LOG(FATAL) << "Wrong message expect GGA got: " << sentence;
             
-            return false;
-        }
+            return -1;
+        }*/
         // Extract UTC time
         if (!(std::getline(iss, token, ','))) {
             LOG(WARNING) << "NO TIME MSG seems empty:" << sentence;
-            return false;   // no time no game
+            return -2;   // no time no game
         }
         //LOG_IF(ERROR, token.contains(".")) << "NOT A TIME";
         LOG_IF(ERROR, token.find('.') == std::string::npos) << "NOT A TIME";
@@ -40,7 +42,7 @@
         
         // Extract latitude
         if (!(std::getline(iss, token, ','))) {
-            return false; // no lat means no lon also no reason to continue
+            return -3; // no lat means no lon also no reason to continue
         }
 
         double latDegrees = std::stod(token.substr(0, 2));
@@ -49,7 +51,7 @@
 
         // Extract latitude hemisphere (N/S)
         if (!(std::getline(iss, token, ','))) {
-            return false;
+            return -4;
         }
         if (token == "S") {
             storage->setLatitude(-1.0*(latDegrees + latMinutes / 60.0));
@@ -58,7 +60,7 @@
         // Extract longitude
         if (!(std::getline(iss, token, ','))) {
             LOG(WARNING) << "Got lat:" << storage->getLatitude() << " But no lon! MSG: " << sentence;
-            return false;
+            return -5;
         }
         double lonDegrees = std::stod(token.substr(0, 3));
         double lonMinutes = std::stod(token.substr(3));
@@ -66,7 +68,7 @@
 
         // Extract longitude hemisphere (E/W)
         if (!(std::getline(iss, token, ','))) {
-            return false;
+            return -6;
         }
         if (token == "W") {
             storage->setLongitude(-1.0*(lonDegrees + lonMinutes / 60.0));
@@ -105,7 +107,7 @@
         // Extract altitude
         if (!(std::getline(iss, token, ','))) {
             LOG(INFO) << "NO 3D fix alt is empty";
-            return false; // no need to continue
+            return -7; // no need to continue
         }
         else
         {
@@ -115,30 +117,30 @@
         // Extract altitude Units
         if (!(std::getline(iss, token, ','))) {
             LOG(ERROR) << "Got alt but no alt units in: " << sentence;
-            return false;
+            return -8;
         }
         LOG_IF(INFO, token.compare("M") != 0) << "NOT IN CI UNITS!!!";
 
         #ifdef SKIP_TAIL
-        return true;
+        return 0;
         #endif
 
         // Extract Undulation - the relationship between the geoid and the WGS84 ellipsoid
         if (!(std::getline(iss, token, ','))) {
-            return false;
+            return -9;
         }
         double undulation = std::stod(token); // TODO: do we need this? parse whatever?
 
         // Extract Units of undulation (M = metres)
         if (!(std::getline(iss, token, ','))) {
-            return false;
+            return -10;
         }
         LOG_IF(INFO, token.compare("M") != 0) << "NOT IN CI UNITS!!!";
 
         // Extract Age of correction data(in seconds)
         // The maximum age reported here is limited to 99 seconds.
         if (!(std::getline(iss, token, ','))) {
-            return false;
+            return -11;
         }
         double age = std::stod(token);
         LOG(INFO) << "Age of data is: " << age << " ss";
@@ -151,5 +153,5 @@
         }
         heading = std::stod(token);
         */
-        return true;
+        return 0;
     }

@@ -1,4 +1,4 @@
-///test NmeaChecksumm
+///test Nmea tools Checksumm 1 & 2, form
 #define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE NmeaChecksum_test
 #include <boost/test/included/unit_test.hpp>
@@ -7,7 +7,7 @@
 #include <iostream>
 #include <nmea_tools.h>
 
-BOOST_AUTO_TEST_SUITE(NmeaChecksumTests)
+BOOST_AUTO_TEST_SUITE(NmeaToolsTests)
 
 BOOST_AUTO_TEST_CASE(FiniteMSG_checksumm_Test)
 {
