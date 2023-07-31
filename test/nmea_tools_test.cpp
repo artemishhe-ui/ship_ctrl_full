@@ -73,4 +73,11 @@ BOOST_AUTO_TEST_CASE(EmptyMSG_form_talker_Test_str)
     BOOST_CHECK_MESSAGE( strcmp(s.c_str() , c)==0, "calc is " << s << " and should be " << c);
 }
 
+BOOST_AUTO_TEST_CASE(CurrentTime)
+{
+    std::string currentTime = getCurrentTime();
+    char  c[] = "000000.00";
+    BOOST_CHECK_MESSAGE( strcmp(currentTime.c_str() , c)!=0, "calc is " << currentTime << " and shouldn't be " << c);
+    //std::cout << "Current time: " << currentTime << std::endl;
+}
 BOOST_AUTO_TEST_SUITE_END()

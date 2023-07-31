@@ -5,6 +5,8 @@
 #include <glog/logging.h>
 
 #include <iostream>
+#include <chrono>
+#include <time.h>
 #include <string>
 #include <iomanip>
 #include <sstream>
@@ -25,3 +27,7 @@ bool CheckChecksum(const std::string& sentence);
 /// @param sentence all exept talker ID and Checksumm 
 /// @return complete MSG
 std::string formNMEAMessage(const std::string& sentence, const std::string talk_id = "U0");
+
+/// @brief systemtime in NMEA format
+/// @return hhmmss.ss
+std::string getCurrentTime();

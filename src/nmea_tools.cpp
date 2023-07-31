@@ -90,3 +90,39 @@ std::string formNMEAMessage(const std::string& sentence, const std::string talk_
 
 
 #undef TALKER_ID
+
+std::string getCurrentTime() {
+    // Get the current system time
+    auto now = std::chrono::system_clock::now();
+    auto time_t_now = std::chrono::system_clock::to_time_t(now);
+
+    // Convert the time to a local time in struct tm
+    std::tm time_info;
+    localtime_r(&time_t_now, &time_info);
+
+    // Extract the individual time components
+    int hours = time_info.tm_hour;
+    int minutes = time_info.tm_min;
+    int seconds = time_info.tm_sec;
+    int milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() % 1000;
+
+    // Format the time as hhmmss.ss
+    std::ostringstream oss;
+    oss << std::setfill('0') << std::setw(2) << hours
+        << std::setw(2) << minutes
+        << std::setw(2) << seconds
+        << '.' << std::setw(2) << milliseconds / 10;
+
+    return oss.str();
+}
+
+/*
+int main() {
+    std::string currentTime = getCurrentTime();
+    std::cout << "Current time: " << currentTime << std::endl;
+    return 0;
+}
+*/
+
+
+
