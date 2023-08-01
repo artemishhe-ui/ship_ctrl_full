@@ -9,7 +9,7 @@
 #include <sstream>
 #include <cmath>
 
-#include "GNSSData.h"
+#include "GNSSData.h" // may be Ship_state.h
 
     /// @brief pares GPGAA sentense
     ///                             ID    hhmmss.ss lat        N/S Long         W/E Qua sats Hpres  Alt     Alt unit Geosep  G unit  sec update  Ref station ID

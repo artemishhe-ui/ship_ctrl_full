@@ -116,13 +116,21 @@ std::string getCurrentTime() {
     return oss.str();
 }
 
-/*
-int main() {
-    std::string currentTime = getCurrentTime();
-    std::cout << "Current time: " << currentTime << std::endl;
-    return 0;
+int convertFloatToInteger5(float value) {
+    // Map the float value to the range -5 to +5
+    float scaledValue = value * 5;
+
+    // Apply rounding using "round half to even" rule
+    int integer = static_cast<int>(std::round(value));
+
+    // Clamp the result to the range -5 to +5
+    integer = std::max(-5, std::min(5, integer));
+
+    return integer;
+
 }
-*/
+
+
 
 
 

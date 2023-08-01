@@ -10,6 +10,7 @@
 #include <string>
 #include <iomanip>
 #include <sstream>
+#include <cmath>
 
 
 /// @brief Function to calculate the NMEA 0183 checksum
@@ -31,3 +32,9 @@ std::string formNMEAMessage(const std::string& sentence, const std::string talk_
 /// @brief systemtime in NMEA format
 /// @return hhmmss.ss
 std::string getCurrentTime();
+
+
+/// @brief float to int5
+/// @param value -1 to +1 float
+/// @return -5 to +5 int
+int convertFloatToInteger5(float value);

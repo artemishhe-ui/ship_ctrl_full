@@ -80,4 +80,9 @@ BOOST_AUTO_TEST_CASE(CurrentTime)
     BOOST_CHECK_MESSAGE( strcmp(currentTime.c_str() , c)!=0, "calc is " << currentTime << " and shouldn't be " << c);
     //std::cout << "Current time: " << currentTime << std::endl;
 }
+BOOST_AUTO_TEST_CASE(floatintconv)
+{
+    int i = convertFloatToInteger5(5.0f);
+    BOOST_CHECK_MESSAGE( i==5, "calc is " << i << " and shouldn't be " << 5);
+}
 BOOST_AUTO_TEST_SUITE_END()

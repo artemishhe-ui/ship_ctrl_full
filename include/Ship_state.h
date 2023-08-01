@@ -20,6 +20,17 @@ private:
 public:
     Ship_state() = default;
     virtual ~Ship_state() = default;
+
+    double get_trust_factor_target(){return trust_factor_target;}
+    double get_trust_factor_state(){return trust_factor_state;}
+
+    double get_rudder_target(){return rudder_target;}
+    double get_rudder_state(){return rudder_state;}
+
+    double get_heading(){return heading;}
+    double get_speed(){return speed;}
+    double * get_accel(){return &accel[0];}
+    
 };
 
 
