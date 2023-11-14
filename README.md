@@ -1,4 +1,6 @@
 # ship_ctrl_full
+[![CMake](https://github.com/ship-ctrl/ship_ctrl_full/actions/workflows/cmake.yml/badge.svg?branch=main)](https://github.com/ship-ctrl/ship_ctrl_full/actions/workflows/cmake.yml)
+
 assemble multiple prjs to finaly become ship ctrl app
 
 # prepare
