@@ -50,4 +50,5 @@ int parseETL(const std::string& sentence, Ship_state * storage)
     unsigned int hh = std::stoi(token.substr(0, 2));
     unsigned int mm = std::stoi(token.substr(2, 2));
     double       ss = std::stod(token.substr(4));
+    return 1;
 }

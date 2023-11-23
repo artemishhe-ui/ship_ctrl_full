@@ -353,3 +353,4 @@ build/
 autom4te.cache/
 # exec
 nmea_console
+.vscode/settings.json
