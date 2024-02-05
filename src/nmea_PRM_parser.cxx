@@ -5,10 +5,45 @@
 #include <glog/logging.h>
 #include <sstream>
 #include <iostream>
-#include "GNSSData.h"
 
 
-int parseNMEA_PRM(const std::string& sentence)
+struct PRM_container
+{
+    std::string Source;
+    unsigned Engine_or_propeller_shaft;
+    unsigned Speed;
+    unsigned Propeller_pitch;
+    std::string Status;
+};
+
+std::string generate_PRM()
+{
+    std::string Source = (rand() % 2) ? "E" : "V";
+    std::string Engine_or_propeller_shaft = std::to_string(int(rand() % 100));
+    std::string Speed = std::to_string(int(rand() % 100));
+    std::string Propeller_pitch = std::to_string(int(rand() % 100));
+    std::string Status = (rand() % 2) ? "A" : "V";
+    std::string Comma = ",";
+
+    return "$--PRM" + Comma + Source + Comma + Engine_or_propeller_shaft + Comma + Speed + Comma + Propeller_pitch + Comma + Status + 
+    "*<CR><LF>";
+}
+
+
+std::string get_PRM(PRM_container container)
+{
+    std::string Source = container.Source;
+    std::string Engine_or_propeller_shaft = std::to_string(container.Engine_or_propeller_shaft);
+    std::string Speed = std::to_string(container.Speed);
+    std::string Propeller_pitch = std::to_string(container.Propeller_pitch);
+    std::string Status = container.Status
+    std::string Comma = ",";
+
+    return "$--PRM" + Comma + Source + Comma + Engine_or_propeller_shaft + Comma + Speed + Comma + Propeller_pitch + Comma + Status + 
+    "*<CR><LF>";
+}
+
+int parseNMEA_PRM(const std::string& sentence, PRM_container storage)
 {
     short error_index = -1;
     std::istringstream iss(sentence);
