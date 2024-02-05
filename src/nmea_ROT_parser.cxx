@@ -5,7 +5,32 @@
 #include <glog/logging.h>
 #include <sstream>
 #include <iostream>
-#include "GNSSData.h"
+
+struct ROT_conainer
+(
+    unsigned Rate_of_turn;
+    std::string Status;
+);
+
+
+std::string generate_rot()
+{
+    std::string Rate_of_turn = std::to_string(int(rand() % 100));
+    std::string Status = (rand() % 2) ? "A" : "V";
+    std::string Comma = ",";
+
+    return "$--ROT" + Comma + Rate_of_turn + Comma + Status + "*<CR><LF>"; 
+}
+
+
+std::string get_rot(ROT_conainer container)
+{
+    std::string Rate_of_turn = std::to_string(container.Rate_of_turn);
+    std::string Status = container.Status;
+    std::string Comma = ",";
+
+    return "$--ROT" + Comma + Rate_of_turn + Comma + Status + "*<CR><LF>"; 
+}
 
 
 int parseNMEA_ROT(const std::string& sentence, Ship_state * storage)
