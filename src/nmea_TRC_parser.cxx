@@ -5,10 +5,61 @@
 #include <glog/logging.h>
 #include <sstream>
 #include <iostream>
-#include "GNSSData.h"
 
 
-int parseNMEA_TRC(const std::string& sentence)
+struct TRC_container
+{
+    unsigned Number_of_thruster;
+    unsigned PRM_demand_value;
+    std::string PRM_mode_indicator;
+    unsigned Pitch_demand_value;
+    std::string Pitch_mode_indicator;
+    unsigned Azimuth_demand;
+    std::string Operating_location_indicator;
+    std::string Sentense_status_flag;
+};
+
+std::string generate_trc()
+{
+    int help = rand() % 3;
+    std::string Number_of_thruster =  std::to_string(int(rand() % 100));
+    std::string PRM_demand_value =  std::to_string(int(rand() % 100));
+    std::string PRM_mode_indicator =  (help == 0) ? "K" : ((help == 1) ? "N" : "S");
+    std::string Pitch_demand_value = std::to_string(int(rand() % 100));
+    help = rand() % 3;
+    std::string Pitch_mode_indicator = (help == 0) ? "V" : ((help == 1) ? "D" : "P");
+    std::string Azimuth_demand = std::to_string(int(rand() % 360));
+    help = rand() % 6;
+    std::string Operating_location_indicator = (help == 0) ? "B" : ((help == 1) ? "P" : ((help == 2) ? "S" : ((help == 3) ? "C" : ((help == 4) ? "E" : "W"))));;
+    std::string Sentense_status_flag = (rand() % 2) ? "C" : "R";
+    std::string Comma = ",";
+
+    return "$--TRC" + Comma + Number_of_thruster + Comma + PRM_demand_value + Comma + PRM_mode_indicator + Comma + Pitch_demand_value
+    + Comma + Pitch_mode_indicator + Comma + Azimuth_demand + Comma + Operating_location_indicator + Comma + Sentense_status_flag +
+    "*<CR><LF>";
+}
+
+
+std::string get_trc(TRC_container container)
+{
+    std::string Number_of_thruster =  std::to_string(container.Number_of_thruster);
+    std::string PRM_demand_value =  std::to_string(container.PRM_demand_value);
+    std::string PRM_mode_indicator =  container.PRM_mode_indicator;
+    std::string Pitch_demand_value = std::to_string(container.Pitch_demand_value);
+    std::string Pitch_mode_indicator = container.PRM_mode_indicator;
+    std::string Azimuth_demand = std::to_string(container.Azimuth_demand);
+    std::string Operating_location_indicator = container.Operating_location_indicator;
+    std::string Sentense_status_flag = container.Sentense_status_flag;
+    std::string Comma = ",";
+
+    return "$--TRC" + Comma + Number_of_thruster + Comma + PRM_demand_value + Comma + PRM_mode_indicator + Comma + Pitch_demand_value
+    + Comma + Pitch_mode_indicator + Comma + Azimuth_demand + Comma + Operating_location_indicator + Comma + Sentense_status_flag +
+    "*<CR><LF>";
+}
+
+
+
+int parseNMEA_TRC(const std::string& sentence, TRC_container * storage)
 {
     short error_index = -1;
     std::istringstream iss(sentence);
