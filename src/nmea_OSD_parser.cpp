@@ -5,10 +5,62 @@
 #include <glog/logging.h>
 #include <sstream>
 #include <iostream>
-#include "GNSSData.h"
+
+struct OSD_container
+(
+    unsigned Heading; 
+    std::string Heading_status;
+    unsigned Vessel_course;
+    std::string Course_reference;
+    unsigned Vessel_speed;
+    std::string Speed_reference;
+    unsigned Vesset_set;
+    unsigned Vessel_drift;
+    std::string Speed_units;
+);
+
+std::string generate_osd()
+{
+    
+    int help = rand() % 5;
+    std::string Heading = std::to_string(int(rand() % 100));; 
+    std::string Heading_status = (rand() % 2) ? "A" : "V";;
+    std::string Vessel_course = std::to_string(int(rand() % 100));
+    std::string Course_reference = (help == 0) ? "M" : ((help == 1) ? "W" : ((help == 2) ? "R" : ((help == 3) ? "B" : "P")));;
+    std::string Vessel_speed = std::to_string(int(rand() % 100));
+    std::string Speed_reference = (help == 0) ? "M" : ((help == 1) ? "W" : ((help == 2) ? "R" : ((help == 3) ? "B" : "P")));; ;
+    help = rand() % 5;
+    std::string Vesset_set = std::to_string(int(rand() % 100));
+    std::string Vessel_drift = std::to_string(int(rand() % 100));
+    help = rand() % 3;
+    std::string Speed_units = (help == 0) ? "K" : ((help == 1) ? "N" : "S");
+
+    return "$--OSD" + Comma + Heading + Comma + Heading_status + Comma + Vessel_course + Comma + Course_reference + Comma + 
+    Vessel_speed + Comma + Speed_reference + Comma + Vesset_set + Comma + Vessel_drift + Comma + Speed_units + Comma + "*<CR><LF>";
+
+}
 
 
-int parseNMEA_OSD(const std::string& sentence, Ship_state * storage)
+std::string get_osd(OSD_container container)
+{
+    std::string Heading = std::to_string(container.Heading); 
+    std::string Heading_status = container.Heading_status;
+    std::string Vessel_course = std::to_string(container.Vessel_course);
+    std::string Course_reference = container.Course_reference;
+    std::string Vessel_speed = std::to_string(container.Vessel_speed); 
+    std::string Speed_reference = container.Speed_reference;
+    std::string Vesset_set = std::to_string(container.Vesset_set);
+    std::string Vessel_drift = std::to_string(container.Vessel_drift);
+    std::string Speed_units =  container.Speed_units;
+    std::string Comma = ",";
+
+    return "$--OSD" + Comma + Heading + Comma + Heading_status + Comma + Vessel_course + Comma + Course_reference + Comma + 
+    Vessel_speed + Comma + Speed_reference + Comma + Vesset_set + Comma + Vessel_drift + Comma + Speed_units + Comma + "*<CR><LF>";
+}
+
+
+
+int parseNMEA_OSD(const std::string& sentence, OSD_container* storage)
 {
     short error_index = -1;
     std::istringstream iss(sentence);
@@ -28,7 +80,7 @@ int parseNMEA_OSD(const std::string& sentence, Ship_state * storage)
         //std::cout << "Heading is " << Heading << "   " << sentence << std::endl;
         return error_index;
     } 
-    storage->heading = stof(heading);
+    storage->Heading = stof(heading);
 
 
     std::string heading_status;
@@ -126,3 +178,4 @@ int parseNMEA_OSD(const std::string& sentence, Ship_state * storage)
 
     return 1;
 }
+
