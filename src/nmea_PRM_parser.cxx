@@ -6,112 +6,115 @@
 #include <sstream>
 #include <iostream>
 
-struct ROR_container
+
+struct PRM_container
 {
-    unsigned Starboard_rudder_only;
-    std::string Status1;
-    unsigned Port_rudder_order;
-    std::string Status2;
-    std::string Command_source_location;
+    std::string Source;
+    unsigned Engine_or_propeller_shaft;
+    unsigned Speed;
+    unsigned Propeller_pitch;
+    std::string Status;
 };
 
-
-std::string generate_ror()
+std::string generate_PRM()
 {
-    std::string Starboard_rudder_only = std::to_string(rand() % 100);
-    std::string Status1 = (rand() % 2) ? "A" : "V";
-    std::string Port_rudder_order = std::to_string(rand() % 100);
-    std::string Status2 = (rand() % 2) ? "A" : "V";
-    std::string Command_source_location = (rand() % 2) ? "A" : "V";
+    std::string Source = (rand() % 2) ? "E" : "V";
+    std::string Engine_or_propeller_shaft = std::to_string(int(rand() % 100));
+    std::string Speed = std::to_string(int(rand() % 100));
+    std::string Propeller_pitch = std::to_string(int(rand() % 100));
+    std::string Status = (rand() % 2) ? "A" : "V";
     std::string Comma = ",";
-    
-    return  "$--ROR" + Comma + Starboard_rudder_only + Status1 + Comma + Port_rudder_order + Comma + Status2 + Comma + 
-    Command_source_location + "*<CR><LF>";
-}
 
-std::string get_ror(ROR_container container)
-{
-    std::string Starboard_rudder_only = std::to_string(container.Starboard_rudder_only);
-    std::string Status1 = container.Starboard_rudder_only;
-    std::string Port_rudder_order = std::to_string(container.Port_rudder_order);
-    std::string Status2 = container.Status2;
-    std::string Command_source_location = container.Starboard_rudder_only;
-    std::string Comma = ",";
-    
-    return  "$--ROR" + Comma + Starboard_rudder_only + Status1 + Comma + Port_rudder_order + Comma + Status2 + Comma + 
-    Command_source_location + "*<CR><LF>";
+    return "$--PRM" + Comma + Source + Comma + Engine_or_propeller_shaft + Comma + Speed + Comma + Propeller_pitch + Comma + Status + 
+    "*<CR><LF>";
 }
 
 
+std::string get_PRM(PRM_container container)
+{
+    std::string Source = container.Source;
+    std::string Engine_or_propeller_shaft = std::to_string(container.Engine_or_propeller_shaft);
+    std::string Speed = std::to_string(container.Speed);
+    std::string Propeller_pitch = std::to_string(container.Propeller_pitch);
+    std::string Status = container.Status
+    std::string Comma = ",";
 
-int parseNMEA_ROR(const std::string& sentence, ROR_container * storage)
+    return "$--PRM" + Comma + Source + Comma + Engine_or_propeller_shaft + Comma + Speed + Comma + Propeller_pitch + Comma + Status + 
+    "*<CR><LF>";
+}
+
+int parseNMEA_PRM(const std::string& sentence, PRM_container storage)
 {
     short error_index = -1;
     std::istringstream iss(sentence);
 
     std::string token;
-    if (!(std::getline(iss, token, ',') && token.substr(3) == "ROR"))
+    if (!(std::getline(iss, token, ',') && token.substr(3) == "PRM"))
     {
         LOG(FATAL) << "Token error in " << sentence;
         return error_index;
     }
 
-    std::string Starboard_rudder_only;
+    std::string Source;
     --error_index;
-    if (!(std::getline(iss, Starboard_rudder_only, ',') && size(Starboard_rudder_only) != 0 && (Starboard_rudder_only.find_first_not_of("0123456789.") == Starboard_rudder_only.npos)))
+    if(!(std::getline(iss, Source, ',') && (Source == "S" || Source == "E")))
     {
-        LOG(WARNING) << "Starboard_rudder_only error in " << sentence;
-        //std::cout << "Starboard_rudder_only is " << Starboard_rudder_only << "   " << sentence << std::endl;
+        LOG(WARNING) << "Source eroor in " << sentence;
+        std::cout << "Source is " << Source << "   " << sentence << std::endl;
         return error_index;
     }
-    storage->Starboard_rudder_only = stof(Starboard_rudder_only);
+    //std::cout << "Source is " << Source << "   " << sentence << std::endl;
+    storage->Source = Source;
     
 
-    std::string Status1;
+
+    std::string Engine_or_propeller_shaft;
     --error_index;
-    if(!(std::getline(iss, Status1, ',') && (Status1 == "A" || Status1 == "V")))
+    if (!(std::getline(iss, Engine_or_propeller_shaft, ',') && size(Engine_or_propeller_shaft) != 0 && (Engine_or_propeller_shaft.find_first_not_of("0123456789.") == Engine_or_propeller_shaft.npos)))
     {
-        LOG(WARNING) << "Status1 eroor in " << sentence;
-        std::cout << "Status1 is " << Status1 << "   " << sentence << std::endl;
+        LOG(WARNING) << "Engine_or_propeller_shaft error in " << sentence;
+        //std::cout << "Engine_or_propeller_shaft is " << Engine_or_propeller_shaft << "   " << sentence << std::endl;
         return error_index;
     }
-    //std::cout << "Status1 is " << Status1 << "   " << sentence << std::endl;
-    storage->Status1 = Status1;
-   
-
-
-    std::string Port_rudder_order;
-    --error_index;
-    if (!(std::getline(iss, Port_rudder_order, ',') && size(Port_rudder_order) != 0 && (Port_rudder_order.find_first_not_of("0123456789.") == Port_rudder_order.npos)))
-    {
-        LOG(WARNING) << "Port_rudder_order error in " << sentence;
-        //std::cout << "Port_rudder_order is " << Port_rudder_order << "   " << sentence << std::endl;
-        return error_index;
-    }
-    storage->Port_rudder_order = stof(Port_rudder_order);
+    storage->Engine_or_propeller_shaft = stof(Engine_or_propeller_shaft);
     
-    
-    std::string Status2;
-    --error_index;
-    if(!(std::getline(iss, Status2, ',') && (Status2 == "A" || Status2 == "V")))
-    {
-        LOG(WARNING) << "Status2 eroor in " << sentence;
-        std::cout << "Status2 is " << Status2 << "   " << sentence << std::endl;
-        return error_index;
-    }
-    //std::cout << "Status2 is " << Status2 << "   " << sentence << std::endl;
-    storage->Status2 = Status2;
 
 
-    std::string Command_source_location;
+    std::string Speed;
     --error_index;
-    if (!(std::getline(iss, Command_source_location, '*') && size(Command_source_location) != 0 && (Command_source_location.find_first_not_of("0123456789.") == Command_source_location.npos)))
+    if (!(std::getline(iss, Speed, ',') && size(Speed) != 0 && (Speed.find_first_not_of("0123456789.") == Speed.npos)))
     {
-        LOG(WARNING) << "Command_source_location error in " << sentence;
-        //std::cout << "Command_source_location is " << Command_source_location << "   " << sentence << std::endl;
+        LOG(WARNING) << "Speed error in " << sentence;
+        //std::cout << "Speed is " << Speed << "   " << sentence << std::endl;
         return error_index;
     }
-    storage->Command_source_location = Command_source_location;
+    storage->Speed = stof(Speed);
     
+
+
+    std::string Propeller_pitch;
+    --error_index;
+    if (!(std::getline(iss, Propeller_pitch, ',') && size(Propeller_pitch) != 0 && (Propeller_pitch.find_first_not_of("0123456789.") == Propeller_pitch.npos)))
+    {
+        LOG(WARNING) << "Propeller_pitch error in " << sentence;
+        //std::cout << "Propeller_pitch is " << Propeller_pitch << "   " << sentence << std::endl;
+        return error_index;
+    }
+    storage->Propeller_pitch = stof(Propeller_pitch);
+    
+
+
+    std::string Status;
+    --error_index;
+    if(!(std::getline(iss, Status, '*') && (Status == "A" || Status == "V")))
+    {
+        LOG(WARNING) << "Status eroor in " << sentence;
+        std::cout << "Status is " << Status << "   " << sentence << std::endl;
+        return error_index;
+    }
+    //std::cout << "Status is " << Status << "   " << sentence << std::endl;
+    storage->Status = Status;
+
+
     return 1;
 }
