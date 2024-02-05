@@ -5,10 +5,46 @@
 #include <glog/logging.h>
 #include <sstream>
 #include <iostream>
-#include "GNSSData.h"
+
+struct ROR_container
+{
+    unsigned Starboard_rudder_only;
+    std::string Status1;
+    unsigned Port_rudder_order;
+    std::string Status2;
+    std::string Command_source_location;
+};
 
 
-int parseNMEA_ROR(const std::string& sentence, Ship_state * storage)
+std::string generate_ror()
+{
+    std::string Starboard_rudder_only = std::to_string(rand() % 100);
+    std::string Status1 = (rand() % 2) ? "A" : "V";
+    std::string Port_rudder_order = std::to_string(rand() % 100);
+    std::string Status2 = (rand() % 2) ? "A" : "V";
+    std::string Command_source_location = (rand() % 2) ? "A" : "V";
+    std::string Comma = ",";
+    
+    return  "$--ROR" + Comma + Starboard_rudder_only + Status1 + Comma + Port_rudder_order + Comma + Status2 + Comma + 
+    Command_source_location + "*<CR><LF>";
+}
+
+std::string get_ror(ROR_container container)
+{
+    std::string Starboard_rudder_only = std::to_string(container.Starboard_rudder_only);
+    std::string Status1 = container.Starboard_rudder_only;
+    std::string Port_rudder_order = std::to_string(container.Port_rudder_order);
+    std::string Status2 = container.Status2;
+    std::string Command_source_location = container.Starboard_rudder_only;
+    std::string Comma = ",";
+    
+    return  "$--ROR" + Comma + Starboard_rudder_only + Status1 + Comma + Port_rudder_order + Comma + Status2 + Comma + 
+    Command_source_location + "*<CR><LF>";
+}
+
+
+
+int parseNMEA_ROR(const std::string& sentence, ROR_container * storage)
 {
     short error_index = -1;
     std::istringstream iss(sentence);
