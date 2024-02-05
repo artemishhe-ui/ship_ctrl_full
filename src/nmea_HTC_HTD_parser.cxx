@@ -28,7 +28,7 @@ struct HTC_HTD_container
     std::string Sentence_status;
 };
 
-int parseNMEA_HTC(const std::string& sentence, GNSSData *storage)
+int parseNMEA_HTC(const std::string& sentence, HTC_HTD_container *storage)
 {
     short error_index = -1;
 std::istringstream iss(sentence);
