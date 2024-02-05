@@ -5,8 +5,28 @@
 #include <glog/logging.h>
 #include <sstream>
 #include <iostream>
-#include "GNSSData.h"
 
+struct HTC_HTD_container
+{
+    std::string Override;
+    unsigned Commanded_rudder_angle;
+    std::string Commanded_rudder_direction;
+    std::string Selected_steering_mode;
+    std::string Turn_mode;
+    unsigned Commanded_rudder_limit;
+    unsigned Commanded_off_heading_limit;
+    unsigned Commanded_radius_of_turn;
+    unsigned Commanded_rate_of_turn;
+    unsigned Commanded_heading_to_steer;
+    unsigned Commanded_off_track_limit;
+    unsigned Commanded_track;
+    std::string Heading_reference_in_use;
+    std::string Rudder_status;
+    std::string Off_heading_status;
+    std::string Off_track_status;
+    int Vessel_heading;
+    std::string Sentence_status;
+};
 
 int parseNMEA_HTC(const std::string& sentence, GNSSData *storage)
 {
@@ -176,12 +196,71 @@ std::istringstream iss(sentence);
         //std::cout << "sentence_status is " << sentence_status << "   " << sentence << std::endl;
         return error_index;
     }
+    storage->Sentence_status = sentence_status;
 
     return 1;
 }
 
 
-int parseNMEA_HTD(const std::string& sentence, GNSSData *storage)
+std::string get_htc(HTC_HTD_container container)
+{
+    std::string Override = container.Override;
+    std::string Commanded_rudder_angle = std::to_string(container.Commanded_rudder_angle);
+    std::string Commanded_rudder_direction = container.Commanded_rudder_direction;
+    std::string Selected_steering_mode = container.Selected_steering_mode;
+    std::string Turn_mode = container.Turn_mode;
+    std::string Commanded_rudder_limit = std::to_string(container.Commanded_rudder_limit);
+    std::string Commanded_off_heading_limit = std::to_string(container.Commanded_off_heading_limit);
+    std::string Commanded_radius_of_turn = std::to_string(container.Commanded_radius_of_turn);
+    std::string Commanded_rate_of_turn = std::to_string(container.Commanded_rate_of_turn);
+    std::string Commanded_heading_to_steer = std::to_string(container.Commanded_heading_to_steer);
+    std::string Commanded_off_track_limit = std::to_string(container.Commanded_off_track_limit);
+    std::string Commanded_track = std::to_string(container.Commanded_track);
+    std::string Heading_reference_in_use = container.Heading_reference_in_use;
+    std::string Sentence_status = container.Sentence_status;
+    std::string Comma = ",";
+
+    return "$--HTC" + Override + Comma + Commanded_rudder_angle + Comma + Commanded_rudder_direction + Comma + Selected_steering_mode
+    + Comma + Turn_mode + Comma + Commanded_rudder_limit + Comma + Commanded_off_heading_limit + Comma + Commanded_radius_of_turn + 
+    Comma + Commanded_rate_of_turn + Comma + Commanded_heading_to_steer + Comma + Commanded_off_track_limit + Comma +
+    Commanded_track + Comma + Heading_reference_in_use + Comma + Sentence_status + "*<CR><LF>";    
+}
+
+std::string generate_htc()
+{
+    std::string Override = (rand() % 2) ? "A" : "V";
+    std::string Commanded_rudder_angle = std::to_string(rand() / 100);
+    std::string Commanded_rudder_direction = (rand() % 2) ? "R" : "L";
+    int help = rand() % 5;
+    std::string Selected_steering_mode = (help == 0) ? "M" : ((help == 1) ? "S" : ((help == 2) ? "H" : ((help == 3) ? "T" : "R")));
+    help = rand() % 3;
+    std::string Turn_mode = (help == 0) ? "T" : ((help == 1) ? "R" : "N");
+    std::string Commanded_rudder_limit = std::to_string(int(rand() % 100));
+    std::string Commanded_off_heading_limit = std::to_string(int(rand() % 100));
+    std::string Commanded_radius_of_turn = std::to_string(int(rand() % 100));
+    std::string Commanded_rate_of_turn = std::to_string(int(rand() % 100));
+    std::string Commanded_heading_to_steer = std::to_string(int(rand() % 100));
+    std::string Commanded_off_track_limit = std::to_string(int(rand() % 100));
+    std::string Commanded_track = std::to_string(int(rand() % 100));
+    std::string Heading_reference_in_use = (help % 2) ? "T" : "M";
+    std::string Sentence_status = (rand() % 2) ? "C" : "R";
+    std::string Comma = ",";
+    
+    return "$--HTC" + Override + Comma + Commanded_rudder_angle + Comma + Commanded_rudder_direction + Comma + Selected_steering_mode
+    + Comma + Turn_mode + Comma + Commanded_rudder_limit + Comma + Commanded_off_heading_limit + Comma + Commanded_radius_of_turn + 
+    Comma + Commanded_rate_of_turn + Comma + Commanded_heading_to_steer + Comma + Commanded_off_track_limit + Comma +
+    Commanded_track + Comma + Heading_reference_in_use + Comma + Sentence_status + "*<CR><LF>";       
+}
+
+
+
+
+
+
+
+
+
+int parseNMEA_HTD(const std::string& sentence, HTC_HTD_container* storage)
 {
     short error_index = -1;
     std::istringstream iss(sentence);
@@ -388,3 +467,65 @@ int parseNMEA_HTD(const std::string& sentence, GNSSData *storage)
 
     return 1;
 }
+
+
+std::string generate_htd()
+{
+    std::string Override = (rand() % 2) ? "A" : "V";
+    std::string Commanded_rudder_angle = std::to_string(rand() / 100);
+    std::string Commanded_rudder_direction = (rand() % 2) ? "R" : "L";
+    int help = rand() % 5;
+    std::string Selected_steering_mode = (help == 0) ? "M" : ((help == 1) ? "S" : ((help == 2) ? "H" : ((help == 3) ? "T" : "R")));
+    help = rand() % 3;
+    std::string Turn_mode = (help == 0) ? "T" : ((help == 1) ? "R" : "N");
+    std::string Commanded_rudder_limit = std::to_string(int(rand() % 100));
+    std::string Commanded_off_heading_limit = std::to_string(int(rand() % 100));
+    std::string Commanded_radius_of_turn = std::to_string(int(rand() % 100));
+    std::string Commanded_rate_of_turn = std::to_string(int(rand() % 100));
+    std::string Commanded_heading_to_steer = std::to_string(int(rand() % 100));
+    std::string Commanded_off_track_limit = std::to_string(int(rand() % 100));
+    std::string Commanded_track = std::to_string(int(rand() % 100));
+    std::string Heading_refrerence_in_use = (help % 2) ? "T" : "M";
+    std::string Rudder_status = (rand() % 2) ? "A" : "V";
+    std::string Off_heading_status = (rand() % 2) ? "A" : "V";
+    std::string Off_track_status = (rand() % 2) ? "A" : "V";
+    std::string Vessel_heading = std::to_string((rand() % 100) + (float)(rand() / 100));
+    std::string Comma = ",";
+
+    return "$--HTD" + Comma + Override + Comma + Commanded_rudder_angle + Comma + Commanded_rudder_direction + Comma + Selected_steering_mode +
+        Comma + Turn_mode + Comma + Commanded_rudder_limit + Comma + Commanded_off_heading_limit + Comma + Commanded_radius_of_turn
+        + Comma + Commanded_rate_of_turn + Comma + Commanded_heading_to_steer + Comma + Commanded_off_track_limit + Comma +
+        Commanded_track + Comma + Heading_refrerence_in_use + Comma + Rudder_status + Comma + Off_heading_status + Comma + Off_track_status
+        + Comma + Vessel_heading + Comma + "*<CR><LF>";
+}
+
+
+std::string get_htd(HTC_HTD_container container)
+{
+    std::string Override = container.Override;
+    std::string Commanded_rudder_angle = std::to_string(container.Commanded_rudder_angle);
+    std::string Commanded_rudder_direction = container.Commanded_rudder_direction;
+    std::string Selected_steering_mode = container.Selected_steering_mode;
+    std::string Turn_mode = container.Turn_mode;
+    std::string Commanded_rudder_limit = std::to_string(container.Commanded_rudder_limit);
+    std::string Commanded_off_heading_limit = std::to_string(container.Commanded_off_heading_limit);
+    std::string Commanded_radius_of_turn = std::to_string(container.Commanded_radius_of_turn);
+    std::string Commanded_rate_of_turn = std::to_string(container.Commanded_rate_of_turn);
+    std::string Commanded_heading_to_steer = std::to_string(container.Commanded_heading_to_steer);
+    std::string Commanded_off_track_limit = std::to_string(container.Commanded_off_track_limit);
+    std::string Commanded_track = std::to_string(container.Commanded_track);
+    std::string Heading_reference_in_use = container.Heading_reference_in_use;
+    std::string Rudder_status = (rand() % 2) ? "A" : "V";
+    std::string Off_heading_status = (rand() % 2) ? "A" : "V";
+    std::string Off_track_status = (rand() % 2) ? "A" : "V";
+    std::string Vessel_heading = std::to_string((rand() % 100) + (float)(rand() / 100));
+    std::string Comma = ",";
+    return "$--HTC" + Override + Comma + Commanded_rudder_angle + Comma + Commanded_rudder_direction + Comma + Selected_steering_mode
+    + Comma + Turn_mode + Comma + Commanded_rudder_limit + Comma + Commanded_off_heading_limit + Comma + Commanded_radius_of_turn + 
+    Comma + Commanded_rate_of_turn + Comma + Commanded_heading_to_steer + Comma + Commanded_off_track_limit + Comma +
+    Commanded_track + Comma + Heading_reference_in_use + Comma + Rudder_status + Comma + Off_heading_status + Comma + Off_track_status 
+    + Comma + Vessel_heading + "*<CR><LF>";    
+}
+
+
+
