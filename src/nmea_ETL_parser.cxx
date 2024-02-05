@@ -21,7 +21,8 @@ struct ETL_container
     int Number_of_engine_or_propeller_shaft;
 };
 
-int parseNMEA_ETL(const std::string& sentence, GNSSData *storage, Ship_state *state)
+
+int parseNMEA_ETL(const std::string& sentence, ETL_container* container)
 {
     short error_index = -1;
     std::istringstream iss(sentence);
@@ -137,4 +138,42 @@ int parseNMEA_ETL(const std::string& sentence, GNSSData *storage, Ship_state *st
 
 
     return 1;
+}
+
+std::string generate_ETL()
+{
+    std::string hh = std::to_string(rand() % 24); if (size(hh) == 1) hh = "0" + hh;
+    std::string mm = std::to_string(rand() % 60); if (size(mm) == 1) mm = "0" + mm;
+    std::string ss = std::to_string(rand() % 60); if (size(ss) == 1) ss = "0" + ss;
+    std::string ms = std::to_string(rand() % 100); if (size(ms) == 1) ms = "0" + ms;
+    std::string event_time = hh + mm + ss + "." + ms;
+    std::string message_type = (rand() % 2) ? "O" : "A";
+    std::string position_indicator_of_engine_telegraph = std::to_string(rand() % 2) + std::to_string(rand() % 5 + 1);
+    std::string position_indicator_of_sub_telegraph = std::to_string(rand() % 3 + 2) + "0";
+    std::string help[7] = { "B", "P", "S", "C", "E", "W", " "};
+    std::string operating_location_indicator =  help[rand() % 7];
+    std::string number_of_engine_or_propeller_shaft = std::to_string(rand() % 10);
+    std::string comma = ",";
+    return "$--ETL" + comma + event_time + comma + message_type + comma + position_indicator_of_engine_telegraph + comma
+        + position_indicator_of_sub_telegraph + comma + operating_location_indicator + comma + number_of_engine_or_propeller_shaft + comma +
+        "*hh<CR><LF>";
+}
+
+
+std::string get_ETL(ETL_container container)
+{
+    std::string hh = std::to_string(container.hh); if (size(hh) == 1) hh = "0" + hh;
+    std::string mm = std::to_string(container.mm); if (size(mm) == 1) mm = "0" + mm;
+    std::string ss = std::to_string(container.ss); if (size(ss) == 1) ss = "0" + ss;
+    std::string ms = std::to_string(container.ms); if (size(ms) == 1) ms = "0" + ms;
+    std::string event_time = hh + mm + ss + "." + ms;
+    std::string message_type = container.message_type;
+    std::string position_indicator_of_engine_telegraph = container.position_indicator_of_engine_telegraph;
+    std::string position_indicator_of_sub_telegraph = std::to_string(container.position_indicator_of_sub_telegraph);
+    std::string operating_location_indicator = container.operating_location_indicator;
+    std::string number_of_engine_or_propeller_shaft = std::to_string(container.number_of_engine_or_propeller_shaft);
+    std::string comma = ",";
+    return "$--ETL" + comma + event_time + comma + message_type + comma + position_indicator_of_engine_telegraph + comma
+        + position_indicator_of_sub_telegraph + comma + operating_location_indicator + comma + number_of_engine_or_propeller_shaft + comma +
+        "*hh<CR><LF>";
 }
