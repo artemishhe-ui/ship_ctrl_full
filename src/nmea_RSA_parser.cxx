@@ -5,10 +5,41 @@
 #include <glog/logging.h>
 #include <sstream>
 #include <iostream>
-#include "GNSSData.h"
 
 
-int parseNMEA_RSA(const std::string& sentence)
+struct RSA_container
+(
+    unsigned Starboard_rudder_sensor;
+    std::string Status1;
+    unsigned Port_rudder_sensor;
+    std::string Status2;
+);
+
+
+std::string generate_rsa()
+{
+    std::string Starboard_rudder_sensor = std::to_string(int(rand() % 100));
+    std::string Status1 = (rand() % 2) ? "A" : "V";
+    std::string Port_rudder_sensor = std::to_string(int(rand() % 100));
+    std::string Status2 = (rand() % 2) ? "A" : "V";
+    std::string Comma = ",";
+
+    return "$--RSA" + Comma + Starboard_rudder_sensor + Comma + Status1 + Comma + Port_rudder_sensor + Comma + Status2 + "*<CR><LF>";   
+}
+
+std::string get_rsa(RSA_container container)
+{
+    std::string Starboard_rudder_sensor = std::to_string(container.Starboard_rudder_sensor);
+    std::string Status1 = container.Status1;
+    std::string Port_rudder_sensor = std::to_string(container.Port_rudder_sensor);
+    std::string Status2= container.Status2;
+    std::string Comma = ",";
+
+    return "$--RSA" + Comma + Starboard_rudder_sensor + Comma + Status1 + Comma + Port_rudder_sensor + Comma + Status2 + "*<CR><LF>";   
+}
+
+
+int parseNMEA_RSA(const std::string& sentence, RSA_container storage)
 {
     short error_index = -1;
     std::istringstream iss(sentence);
@@ -68,3 +99,4 @@ int parseNMEA_RSA(const std::string& sentence)
 
     return 1;
 }
+
