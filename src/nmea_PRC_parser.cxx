@@ -20,42 +20,54 @@ struct PRC_container
 
 std::string generate_prc()
 {
+    std::string ret_str="$--PRC,";
+    ret_str.reserve(37*sizeof(char));
     int help = rand() % 3;
-    std::string Lever_demand_position = std::to_string(rand() % 200 - 100);
-    std::string Lever_demand_status = (rand() % 2) ? "A" : "V";
-    std::string PRM_demand_value =  std::to_string(rand() % 100);
+    ret_str+= std::to_string(rand() % 200 - 100); //Lever_demand_position
+    ret_str+= ',';
+    ret_str+= (rand() % 2) ? 'A' : 'V'; //Lever_demand_status
+    ret_str+= ',';
+    ret_str+=  std::to_string(rand() % 100);   //PRM_demand_value
+    ret_str+= ',';
     help = rand() % 3;
-    std::string PRM_mode_indicator = (help == 0) ? "V" : ((help == 1) ? "R" : "P");
-    std::string Pitch_demand_value = std::to_string(rand() % 100);
+    ret_str+= (help == 0) ? 'V' : ((help == 1) ? 'R' : 'P'); //PRM_mode_indicator
+    ret_str+= ',';
+    ret_str+= std::to_string(rand() % 100);  //Pitch_demand_value
+    ret_str+= ',';
     help = rand() % 3;
-    std::string Pitch_mode_indicator = (help == 0) ? "V" : ((help == 1) ? "D" : "P");;
+    ret_str+= (help == 0) ? 'V' : ((help == 1) ? 'D' : 'P');;  //Pitch_mode_indicator
+    ret_str+= ',';
     help = rand() % 6;
-    std::string Operating_location_indicator = (help == 0) ? "B" : ((help == 1) ? "P" : ((help == 2) ? "S" : ((help == 3) ? "C" : ((help == 4) ? "E" : "W"))));
-    std::string Number_of_engine_or_propeller_shaft = std::to_string(rand() % 100);  
-    std::string Comma = ",";
+    ret_str+= (help == 0) ? 'B' : ((help == 1) ? 'P' : ((help == 2) ? 'S' : ((help == 3) ? 'C' : ((help == 4) ? 'E' : 'W')))); //Operating_location_indicator
+    ret_str+= ',';
+    ret_str+= std::to_string(rand() % 100); //Number_of_engine_or_propeller_shaft
+    ret_str+= "*<CR><LF>";
 
-    return "$--PRC" + Comma + Lever_demand_position + Comma + Lever_demand_status + Comma + PRM_demand_value + Comma + PRM_mode_indicator
-    + Comma + Pitch_demand_value + Comma + Pitch_mode_indicator + Comma + Operating_location_indicator + Comma 
-    + Number_of_engine_or_propeller_shaft + "*<CR><LF>";  
-
+    return ret_str;
 }
 
-std::string get_prc(PRC_container container)
+td::string get_prc(const PRC_container& container)
 {
-    std::string Lever_demand_position = std::to_string(container.Lever_demand_position);
-    std::string Lever_demand_status = container.Lever_demand_status;
-    std::string PRM_demand_value =  std::to_string(container.PRM_demand_value);
-    std::string PRM_mode_indicator = container.PRM_mode_indicator;
-    std::string Pitch_demand_value = std::to_string(container.Pitch_demand_value);
-    std::string Pitch_mode_indicator = container.Pitch_mode_indicator;
-    std::string Operating_location_indicator = container.Operating_location_indicator;
-    std::string Number_of_engine_or_propeller_shaft = std::to_string(container.Number_of_engine_or_propeller_shaft); 
-    std::string Comma = ",";
+    std::string ret_str="$--PRC,";
+    ret_str.reserve(37*sizeof(char));
+    ret_str+= std::to_string(container.Lever_demand_position);
+    ret_str+= ',';
+    ret_str+= container.Lever_demand_status;
+    ret_str+= ',';
+    ret_str+=  std::to_string(container.PRM_demand_value);
+    ret_str+= ',';
+    ret_str+= container.PRM_mode_indicator;
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Pitch_demand_value);
+    ret_str+= ',';
+    ret_str+= container.Pitch_mode_indicator;
+    ret_str+= ',';
+    ret_str+= container.Operating_location_indicator;
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Number_of_engine_or_propeller_shaft); 
+    ret_str+="*<CR><LF>"; 
 
-    return "$--PRC" + Comma + Lever_demand_position + Comma + Lever_demand_status + Comma + PRM_demand_value + Comma + PRM_mode_indicator
-    + Comma + Pitch_demand_value + Comma + Pitch_mode_indicator + Comma + Operating_location_indicator + Comma 
-    + Number_of_engine_or_propeller_shaft + "*<CR><LF>";  
-    
+    return ret_str;
 }
 
 int parseNMEA_PRC(const std::string& sentence, PRC_container* storage)
@@ -166,3 +178,4 @@ int parseNMEA_PRC(const std::string& sentence, PRC_container* storage)
 }
 
  
+
