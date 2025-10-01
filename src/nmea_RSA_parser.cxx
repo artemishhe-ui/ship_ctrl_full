@@ -18,24 +18,35 @@ struct RSA_container
 
 std::string generate_rsa()
 {
-    std::string Starboard_rudder_sensor = std::to_string(int(rand() % 100));
-    std::string Status1 = (rand() % 2) ? "A" : "V";
-    std::string Port_rudder_sensor = std::to_string(int(rand() % 100));
-    std::string Status2 = (rand() % 2) ? "A" : "V";
-    std::string Comma = ",";
+    //25 chars at most
+    std::string ret_str="$--RSA,";
+    ret_str.reserve(25*sizeof(char));
+    ret_str += std::to_string(int(rand() % 100));    //Starboard_rudder_sensor
+    ret_str +=',';
+    ret_str += (rand() % 2) ? 'A' : 'V'; //Status1
+    ret_str +=',';
+    ret_str += std::to_string(int(rand() % 100)); //Port_rudder_sensor
+    ret_str +=',';
+    ret_str += (rand() % 2) ? 'A' : 'V'; //Status2
+    ret_str += "*<CR><LF>"; 
 
-    return "$--RSA" + Comma + Starboard_rudder_sensor + Comma + Status1 + Comma + Port_rudder_sensor + Comma + Status2 + "*<CR><LF>";   
+    return ret_str;
 }
 
-std::string get_rsa(RSA_container container)
+std::string get_rsa(const RSA_container& container)
 {
-    std::string Starboard_rudder_sensor = std::to_string(container.Starboard_rudder_sensor);
-    std::string Status1 = container.Status1;
-    std::string Port_rudder_sensor = std::to_string(container.Port_rudder_sensor);
-    std::string Status2= container.Status2;
-    std::string Comma = ",";
+    std::string ret_str="$--RSA,";
+    ret_str.reserve(25*sizeof(char));
+    ret_str +=std::to_string(container.Starboard_rudder_sensor);   
+    ret_str +=',';
+    ret_str += container.Status1;  
+    ret_str +=',';
+    ret_str += std::to_string(container.Port_rudder_sensor);  
+    ret_str +=',';
+    ret_str +=container.Status2;
+    ret_str +="*<CR><LF>";
 
-    return "$--RSA" + Comma + Starboard_rudder_sensor + Comma + Status1 + Comma + Port_rudder_sensor + Comma + Status2 + "*<CR><LF>";   
+    return ret_str;
 }
 
 
@@ -99,4 +110,5 @@ int parseNMEA_RSA(const std::string& sentence, RSA_container storage)
 
     return 1;
 }
+
 
