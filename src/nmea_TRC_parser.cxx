@@ -19,42 +19,54 @@ struct TRC_container
     std::string Sentense_status_flag;
 };
 
-std::string generate_trc()
-{
+std::string generate_trc() {
+    std::string ret_str="$--TRC,";
     int help = rand() % 3;
-    std::string Number_of_thruster =  std::to_string(int(rand() % 100));
-    std::string PRM_demand_value =  std::to_string(int(rand() % 100));
-    std::string PRM_mode_indicator =  (help == 0) ? "K" : ((help == 1) ? "N" : "S");
-    std::string Pitch_demand_value = std::to_string(int(rand() % 100));
+    ret_str.reserve(40 * sizeof(char));    //at most the message will be 40 chars long
+    ret_str += std::to_string(int(rand() % 100));   //Number of thruster
+    ret_str += ',';
+    ret_str += std::to_string(int(rand() % 100));   //PRM_demand_value
+    ret_str += ',';
+    ret_str += (help == 0) ? 'K' : ((help == 1) ? 'N' : 'S');   //PRM_mode_indicator
+    ret_str += ',';
+    ret_str += std::to_string(int(rand() % 100));   //Pitch_demand_value
+    ret_str += ',';
     help = rand() % 3;
-    std::string Pitch_mode_indicator = (help == 0) ? "V" : ((help == 1) ? "D" : "P");
-    std::string Azimuth_demand = std::to_string(int(rand() % 360));
+    ret_str += (help == 0) ? 'V' : ((help == 1) ? 'D' : 'P');   //Pitch_mode_indicator
+    ret_str += ',';
+    ret_str += std::to_string(int(rand() % 360));   //Azimuth_demand
+    ret_str += ',';
     help = rand() % 6;
-    std::string Operating_location_indicator = (help == 0) ? "B" : ((help == 1) ? "P" : ((help == 2) ? "S" : ((help == 3) ? "C" : ((help == 4) ? "E" : "W"))));;
-    std::string Sentense_status_flag = (rand() % 2) ? "C" : "R";
-    std::string Comma = ",";
-
-    return "$--TRC" + Comma + Number_of_thruster + Comma + PRM_demand_value + Comma + PRM_mode_indicator + Comma + Pitch_demand_value
-    + Comma + Pitch_mode_indicator + Comma + Azimuth_demand + Comma + Operating_location_indicator + Comma + Sentense_status_flag +
-    "*<CR><LF>";
+    ret_str += (help == 0) ? 'B' : ((help == 1) ? 'P' : ((help == 2) ? 'S' : ((help == 3) ? 'C' : ((help == 4) ? 'E' : 'W'))));;    //Operating_location_indicator
+    ret_str += ',';
+    ret_str += (rand() % 2) ? 'C' : 'R';    //Sentense_status_flag
+    ret_str += "*<CR><LF>";
+    
+    return ret_str;
 }
 
 
-std::string get_trc(TRC_container container)
+std::string get_trc(const TRC_container& container)
 {
-    std::string Number_of_thruster =  std::to_string(container.Number_of_thruster);
-    std::string PRM_demand_value =  std::to_string(container.PRM_demand_value);
-    std::string PRM_mode_indicator =  container.PRM_mode_indicator;
-    std::string Pitch_demand_value = std::to_string(container.Pitch_demand_value);
-    std::string Pitch_mode_indicator = container.PRM_mode_indicator;
-    std::string Azimuth_demand = std::to_string(container.Azimuth_demand);
-    std::string Operating_location_indicator = container.Operating_location_indicator;
-    std::string Sentense_status_flag = container.Sentense_status_flag;
-    std::string Comma = ",";
-
-    return "$--TRC" + Comma + Number_of_thruster + Comma + PRM_demand_value + Comma + PRM_mode_indicator + Comma + Pitch_demand_value
-    + Comma + Pitch_mode_indicator + Comma + Azimuth_demand + Comma + Operating_location_indicator + Comma + Sentense_status_flag +
-    "*<CR><LF>";
+    std::string ret_str = "$--TRC,";
+    ret_str.reserve(40 * sizeof(char));
+    ret_str += std::to_string(container.Number_of_thruster);   
+    ret_str += ',';
+    ret_str += std::to_string(container.PRM_demand_value); 
+    ret_str += ',';
+    ret_str += container.PRM_mode_indicator;   
+    ret_str += ',';
+    ret_str += std::to_string(container.Pitch_demand_value);   
+    ret_str += ',';
+    ret_str += container.PRM_mode_indicator;   
+    ret_str += ',';
+    ret_str += std::to_string(container.Azimuth_demand);  
+    ret_str += ',';
+    ret_str += container.Operating_location_indicator;  
+    ret_str += ',';
+    ret_str += container.Sentense_status_flag;  
+    ret_str+="*<CR><LF>";
+    return ret_str;
 }
 
 
@@ -172,3 +184,4 @@ int parseNMEA_TRC(const std::string& sentence, TRC_container * storage)
 
     return 1;
 }    
+
