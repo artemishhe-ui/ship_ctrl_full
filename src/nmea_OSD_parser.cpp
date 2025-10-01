@@ -21,42 +21,61 @@ struct OSD_container
 
 std::string generate_osd()
 {
-    
+    std::string ret_str="$--OSD,";  
+    ret_str.reserve(40*sizeof(char));
     int help = rand() % 5;
-    std::string Heading = std::to_string(int(rand() % 100));; 
-    std::string Heading_status = (rand() % 2) ? "A" : "V";;
-    std::string Vessel_course = std::to_string(int(rand() % 100));
-    std::string Course_reference = (help == 0) ? "M" : ((help == 1) ? "W" : ((help == 2) ? "R" : ((help == 3) ? "B" : "P")));;
-    std::string Vessel_speed = std::to_string(int(rand() % 100));
-    std::string Speed_reference = (help == 0) ? "M" : ((help == 1) ? "W" : ((help == 2) ? "R" : ((help == 3) ? "B" : "P")));; ;
+    ret_str+= std::to_string(int(rand() % 100));  //heading
+    ret_str+=',';
+    ret_str+= (rand() % 2) ? 'A' : 'V';  //heading status
+    ret_str+=',';
+    ret_str+= std::to_string(int(rand() % 100));  //Vessel course
+    ret_str+=',';
+    ret_str+= (help == 0) ? 'M' : ((help == 1) ? 'W' : ((help == 2) ? 'R' : ((help == 3) ? 'B' : 'P')));   //Cource reference
+    ret_str+=',';
+    ret_str+= std::to_string(int(rand() % 100));   //Vessel speed
+    ret_str+=',';
+    ret_str+= (help == 0) ? 'M' : ((help == 1) ? 'W' : ((help == 2) ? 'R' : ((help == 3) ? 'B' : 'P')));    //Speed reference
+    ret_str+=',';
     help = rand() % 5;
-    std::string Vesset_set = std::to_string(int(rand() % 100));
-    std::string Vessel_drift = std::to_string(int(rand() % 100));
+    ret_str+= std::to_string(int(rand() % 100)); //Vesset set
+    ret_str+=',';
+    ret_str+= std::to_string(int(rand() % 100));   //Vessel drift
+    ret_str+=',';
     help = rand() % 3;
-    std::string Speed_units = (help == 0) ? "K" : ((help == 1) ? "N" : "S");
+    ret_str+= (help == 0) ? 'K' : ((help == 1) ? 'N' : 'S');    //Speed Units
+    ret_str+=',';
+    ret_str+="*<CR><LF>";
 
-    return "$--OSD" + Comma + Heading + Comma + Heading_status + Comma + Vessel_course + Comma + Course_reference + Comma + 
-    Vessel_speed + Comma + Speed_reference + Comma + Vesset_set + Comma + Vessel_drift + Comma + Speed_units + Comma + "*<CR><LF>";
-
+    return ret_str;
 }
 
 
-std::string get_osd(OSD_container container)
+std::string get_osd(const OSD_container& container)
 {
-    std::string Heading = std::to_string(container.Heading); 
-    std::string Heading_status = container.Heading_status;
-    std::string Vessel_course = std::to_string(container.Vessel_course);
-    std::string Course_reference = container.Course_reference;
-    std::string Vessel_speed = std::to_string(container.Vessel_speed); 
-    std::string Speed_reference = container.Speed_reference;
-    std::string Vesset_set = std::to_string(container.Vesset_set);
-    std::string Vessel_drift = std::to_string(container.Vessel_drift);
-    std::string Speed_units =  container.Speed_units;
-    std::string Comma = ",";
+    std::string ret_str="$--OSD,";  
+    ret_str.reserve(40*sizeof(char));
+    ret_str+= std::to_string(container.Heading); 
+    ret_str+= container.Heading_status;
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Vessel_course);
+    ret_str+= ',';
+    ret_str+=container.Course_reference;
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Vessel_speed); 
+    ret_str+= ',';
+    ret_str+= container.Speed_reference;
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Vesset_set);
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Vessel_drift);
+    ret_str+= ',';
+    ret_str+= container.Speed_units;
+    ret_str+= ',';
+    ret_str+= "*<CR><LF>";
 
-    return "$--OSD" + Comma + Heading + Comma + Heading_status + Comma + Vessel_course + Comma + Course_reference + Comma + 
-    Vessel_speed + Comma + Speed_reference + Comma + Vesset_set + Comma + Vessel_drift + Comma + Speed_units + Comma + "*<CR><LF>";
+    return ret_str;
 }
+
 
 
 
@@ -178,4 +197,5 @@ int parseNMEA_OSD(const std::string& sentence, OSD_container* storage)
 
     return 1;
 }
+
 
