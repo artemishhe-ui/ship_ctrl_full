@@ -26,7 +26,7 @@ std::string generate_rot()
 }
 
 
-std::string get_rot(ROT_container& container)
+std::string get_rot(const ROT_container& container)
 {
     std::string ret_str="$--ROT,";
     ret_str.reserve(30*sizeof(char));
@@ -87,4 +87,5 @@ int parseNMEA_ROT(const std::string& sentence, Ship_state * storage)
 
     return 1;
 }
+
 
