@@ -15,21 +15,27 @@ struct ROT_conainer
 
 std::string generate_rot()
 {
-    std::string Rate_of_turn = std::to_string(int(rand() % 100));
-    std::string Status = (rand() % 2) ? "A" : "V";
-    std::string Comma = ",";
-
-    return "$--ROT" + Comma + Rate_of_turn + Comma + Status + "*<CR><LF>"; 
+    std::string ret_str="$--ROT,";
+    ret_str.reserve(30*sizeof(char));
+    ret_str+=std::to_string(int(rand() % 100)); //Rate_of_turn
+    ret_str+= ",";
+    ret_str+=(rand() % 2) ? 'A' : 'V';  //Status
+    ret_str+="*<CR><LF>"; 
+    
+    return ret_str;
 }
 
 
-std::string get_rot(ROT_conainer container)
+std::string get_rot(ROT_container& container)
 {
-    std::string Rate_of_turn = std::to_string(container.Rate_of_turn);
-    std::string Status = container.Status;
-    std::string Comma = ",";
-
-    return "$--ROT" + Comma + Rate_of_turn + Comma + Status + "*<CR><LF>"; 
+    std::string ret_str="$--ROT,";
+    ret_str.reserve(30*sizeof(char));
+    ret_str+= std::to_string(container.Rate_of_turn);
+    ret_str+= ',';
+    ret_str+= container.Status;
+    ret_str+= "*<CR><LF>"; 
+    
+    return ret_str;
 }
 
 
@@ -81,3 +87,4 @@ int parseNMEA_ROT(const std::string& sentence, Ship_state * storage)
 
     return 1;
 }
+
