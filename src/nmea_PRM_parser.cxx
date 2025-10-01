@@ -18,31 +18,40 @@ struct PRM_container
 
 std::string generate_PRM()
 {
-    std::string Source = (rand() % 2) ? "E" : "V";
-    std::string Engine_or_propeller_shaft = std::to_string(int(rand() % 100));
-    std::string Speed = std::to_string(int(rand() % 100));
-    std::string Propeller_pitch = std::to_string(int(rand() % 100));
-    std::string Status = (rand() % 2) ? "A" : "V";
-    std::string Comma = ",";
+    std::string ret_str="$--PRM,";
+    ret_str.reserve(28*sizeof(char));
+    ret_str+= (rand() % 2) ? 'E' : 'V'; //Source
+    ret_str+= ',';
+    ret_str+= std::to_string(int(rand() % 100));  //Engine_or_propeller_shaft
+    ret_str+= ',';
+    ret_str+= std::to_string(int(rand() % 100));  //Speed
+    ret_str+= ',';
+    ret_str+= std::to_string(int(rand() % 100));    //Propeller_pitch 
+    ret_str+= ',';
+    ret_str+= (rand() % 2) ? 'A' : 'V';  //Status
+    ret_str+= "*<CR><LF>";
 
-    return "$--PRM" + Comma + Source + Comma + Engine_or_propeller_shaft + Comma + Speed + Comma + Propeller_pitch + Comma + Status + 
-    "*<CR><LF>";
+    return ret_str;
 }
 
 
-std::string get_PRM(PRM_container container)
+std::string get_PRM(const PRM_container& container)
 {
-    std::string Source = container.Source;
-    std::string Engine_or_propeller_shaft = std::to_string(container.Engine_or_propeller_shaft);
-    std::string Speed = std::to_string(container.Speed);
-    std::string Propeller_pitch = std::to_string(container.Propeller_pitch);
-    std::string Status = container.Status
-    std::string Comma = ",";
+    std::string ret_str="$--PRM,";
+    ret_str.reserve(28*sizeof(char));
+    ret_str+= container.Source;
+    ret_str+= ',';
+    ret_str+=std::to_string(container.Engine_or_propeller_shaft);
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Speed);
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Propeller_pitch);
+    ret_str+= ',';
+    ret_str+= container.Status;
+    ret_str+=  "*<CR><LF>";
 
-    return "$--PRM" + Comma + Source + Comma + Engine_or_propeller_shaft + Comma + Speed + Comma + Propeller_pitch + Comma + Status + 
-    "*<CR><LF>";
+    return ret_str;
 }
-
 int parseNMEA_PRM(const std::string& sentence, PRM_container storage)
 {
     short error_index = -1;
@@ -118,3 +127,4 @@ int parseNMEA_PRM(const std::string& sentence, PRM_container storage)
 
     return 1;
 }
+
