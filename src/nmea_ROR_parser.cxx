@@ -18,28 +18,36 @@ struct ROR_container
 
 std::string generate_ror()
 {
-    std::string Starboard_rudder_only = std::to_string(rand() % 100);
-    std::string Status1 = (rand() % 2) ? "A" : "V";
-    std::string Port_rudder_order = std::to_string(rand() % 100);
-    std::string Status2 = (rand() % 2) ? "A" : "V";
-    std::string Command_source_location = (rand() % 2) ? "A" : "V";
-    std::string Comma = ",";
-    
-    return  "$--ROR" + Comma + Starboard_rudder_only + Status1 + Comma + Port_rudder_order + Comma + Status2 + Comma + 
-    Command_source_location + "*<CR><LF>";
+    std::string ret_str="$--ROR,";
+    ret_str.reserve(26*sizeof(char));
+    ret_str+= std::to_string(rand() % 100);   //Starboard_rudder_only
+    ret_str+= (rand() % 2) ? 'A' : 'V'; //Status1
+    ret_str+= ',';
+    ret_str+= std::to_string(rand() % 100);   //Port_rudder_order
+    ret_str+= ',';
+    ret_str+= (rand() % 2) ? 'A' : 'V'; //Status2
+    ret_str+= ',';
+    ret_str+= (rand() % 2) ? 'A' : 'V'; //Command_source_location
+    ret_str+= "*<CR><LF>";
+
+    return ret_str;
 }
 
-std::string get_ror(ROR_container container)
+std::string get_ror(const ROR_container& container)
 {
-    std::string Starboard_rudder_only = std::to_string(container.Starboard_rudder_only);
-    std::string Status1 = container.Starboard_rudder_only;
-    std::string Port_rudder_order = std::to_string(container.Port_rudder_order);
-    std::string Status2 = container.Status2;
-    std::string Command_source_location = container.Starboard_rudder_only;
-    std::string Comma = ",";
+    std::string ret_str="$--ROR,";
+    ret_str.reserve(26*sizeof(char));
+    ret_str+= std::to_string(container.Starboard_rudder_only);
+    ret_str+= container.Status1;
+    ret_str+= ',';
+    ret_str+= std::to_string(container.Port_rudder_order);
+    ret_str+= ',';
+    ret_str+= container.Status2;
+    ret_str+= ',';
+    ret_str+= container.Command_source_location;
+    ret_str+="*<CR><LF>";
     
-    return  "$--ROR" + Comma + Starboard_rudder_only + Status1 + Comma + Port_rudder_order + Comma + Status2 + Comma + 
-    Command_source_location + "*<CR><LF>";
+    return ret_str;
 }
 
 
@@ -115,3 +123,4 @@ int parseNMEA_ROR(const std::string& sentence, ROR_container * storage)
     
     return 1;
 }
+
