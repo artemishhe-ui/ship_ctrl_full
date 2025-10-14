@@ -36,7 +36,7 @@ std::string generate_rsa()
 std::string get_rsa(const RSA_container& container)
 {
     std::string ret_str="$--RSA,";
-    ret_str.reserve(25*sizeof(char));
+    ret_str.reserve(82*sizeof(char));
     ret_str +=std::to_string(container.Starboard_rudder_sensor);   
     ret_str +=',';
     ret_str += container.Status1;  
@@ -110,5 +110,6 @@ int parseNMEA_RSA(const std::string& sentence, RSA_container storage)
 
     return 1;
 }
+
 
 
