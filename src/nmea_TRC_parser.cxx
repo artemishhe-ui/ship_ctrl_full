@@ -49,7 +49,7 @@ std::string generate_trc() {
 std::string get_trc(const TRC_container& container)
 {
     std::string ret_str = "$--TRC,";
-    ret_str.reserve(40 * sizeof(char));
+    ret_str.reserve(82 * sizeof(char));        //82 probably should be named
     ret_str += std::to_string(container.Number_of_thruster);   
     ret_str += ',';
     ret_str += std::to_string(container.PRM_demand_value); 
@@ -184,4 +184,5 @@ int parseNMEA_TRC(const std::string& sentence, TRC_container * storage)
 
     return 1;
 }    
+
 
