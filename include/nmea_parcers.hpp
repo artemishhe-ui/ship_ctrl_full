@@ -29,10 +29,21 @@ enum class msg_type{    //I believe special type for checking the msgtype can be
     HTD,
     ETL
 };
-
-//==================================================================================
-//Parent class for all message types, objects of this class aren`t supposed to exist
-//==================================================================================
+/*//======================================================================================================
+//strings that are 100% containing valid NMEA message, so validation will not be needed in every process
+//======================================================================================================
+class valid_string{
+    private:
+        std::string sentence;
+        bool isValid;    //if no exception syntax
+    public:
+        valid_string(): sentence(""), isValid(false) {}
+        valid_string(const std::string& input_str): sentence(s)
+};
+*/
+//=================================================================================================================================================
+//Parent class for all message types, basically object of this class is created to store message, do safety stuff, and create object of needed type
+//=================================================================================================================================================
 class Message{
     public:
     //    Message():_talkerID(talkerID::ERR), _Message(EMPTY_NMEA_MSG){}
@@ -55,12 +66,19 @@ class Message{
             default: {this-> _talkerID=talkerID::ERR; break;}
            }*/
         virtual ~Message()=default;
-
+        Message(const std::string& sentence): _talkerID(determinetalkerID(sentence)/*not written*/), _Message(sentence), _msg_type(determineMsgType(sentence) /*not written*/ {
+            switch(this->_msg_type){
+                case TRC: {this->valid_string_ptr = new TRC_message(sentence); break;}
+                //I`ll write all cases when be no lazy
+        }
         //getters
         talkerID getTalkerID() const {return this->_talkerID;}
         std::string getMessage() const {return this->_Message;}
+
     private:
         Message()=default;
+        Message* valid_string_ptr;
+        msg_type _msg_type;
     protected:
     talkerID _talkerID;
     //CHECKSUM_TYPE _expected_checksum
@@ -70,16 +88,15 @@ class Message{
 };
 
 
-class TRC_message final : public Message{
+class TRC_message final : public Message_handler{
     public:
         
         TRC_message()=default;
         ~TRC_message()=default;
-        std::string parceTRC(); //todo
-        
+        TRC_message (const std::string& sentence);    //todo
+        TRC_message(const Ship_state* Ship_state_info); //todo
         std::string generateTRC() const;
         std::string getTRC() const;
-        TRC_message(const Ship_state* Ship_state_info); //todo
 
     private:
         static const msg_type _msg_type= msg_type::TRC;
