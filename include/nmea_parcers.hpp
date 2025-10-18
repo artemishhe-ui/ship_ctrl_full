@@ -16,7 +16,7 @@ enum class talkerID{
     /*I believe there is more of these*/
 };
 
-enum class msg_type{    //I believe special type for checking the msgtype can be useful
+enum class msg_type{    
     ERR=-1,
     TRC,
     RSA,
