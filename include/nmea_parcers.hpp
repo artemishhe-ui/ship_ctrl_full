@@ -16,6 +16,17 @@ enum class talkerID{
     /*I believe there is more of these*/
 };
 
+//helper function to convert to string
+std::string to_string_ID(talkerID _ID){
+    switch(_ID){
+        case ERR: return "ERR";
+        case GL: return "GL";
+        case BD: return "BD";
+        case GB: return "GB";
+        case GA: return "GA";
+    }
+}
+
 enum class msg_type{    
     ERR=-1,
     TRC,
@@ -83,7 +94,9 @@ class Message{
     talkerID _talkerID;
     //CHECKSUM_TYPE _expected_checksum
     std::string _Message;  
-    [[nodiscard]] std::string CalculateCheckSum() const;
+    //default arg for validation cpecified for every other possible case
+    [[nodiscard]] std::string CalculateCheckSum(std::string& str = this->_Message) const;    
+    [[nodiscard]] bool SetCheckSum(std::string& str = this->_Message);
     [[nodiscard]] bool CheckCheckSum() const;
 };
 
